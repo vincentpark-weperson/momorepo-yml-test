@@ -1,0 +1,89 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [master, develop]
+
+jobs:
+  service-app:
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.changed.outputs.changed }}
+    steps: 
+      uses: ./
+        id: changed
+        with:
+          paths: 
+            - 'packages/app/**'
+            - '!packages/app/functions/**'
+
+  service-functions:
+    runs-on: ubuntu-latest
+      outputs:
+        changed: ${{ steps.changed.outputs.changed }}
+      steps: 
+        uses: ./
+          id: changed
+          with:
+            paths: 
+              - 'packages/app/functions/**'
+
+  service-landing:
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.changed.outputs.changed }}
+    steps: 
+      uses: ./
+        id: changed
+        with:
+          paths: 
+            - 'packages/landing/**'
+
+  deploy-dev-app:
+    needs: [service-app, service-functions]
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+       
+      - name: Develop Changed app/functions 1
+        if: needs.service-functions.outputs.changed == 'true'
+        run: echo "Call app/functions 1"
+
+      - name: Develop Changed app/functions 2
+        if: needs.service-functions.outputs.changed == 'true'
+        run: echo "Call app/functions 2"
+
+      - name: Develop Changed app
+        if: needs.service-app.outputs.changed == 'true'
+        run: echo "Call app"
+
+  deploy-prod-app:
+    needs: [service-app, service-functions]
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Product Changed app/functions 1
+        if: needs.service-functions.outputs.changed == 'true'
+        run: echo "Call app/functions 1"
+
+      - name: Product Changed app/functions 2
+        if: needs.service-functions.outputs.changed == 'true'
+        run: echo "Call app/functions 2"
+
+      - name: Product Changed app
+        if: needs.service-app.outputs.changed == 'true'
+        run: echo "Call app"
+
+  deploy-landing:
+    needs: [service-landing]
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Product Changed landing
+        if: needs.service-landing.outputs.changed == 'true'
+        run: echo "Call landing"
