@@ -9,35 +9,35 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       changed: ${{ steps.changed.outputs.changed }}
-    steps: 
+    steps:
       - uses: ./
         id: changed
         with:
-          paths: 
-            - 'packages/app/**'
-            - '!packages/app/functions/**'
+          paths:
+            - "packages/app/**"
+            - "!packages/app/functions/**"
 
   service-functions:
     runs-on: ubuntu-latest
-      outputs:
-        changed: ${{ steps.changed.outputs.changed }}
-      steps: 
-        - uses: ./
-          id: changed
-          with:
-            paths: 
-              - 'packages/app/functions/**'
+    outputs:
+      changed: ${{ steps.changed.outputs.changed }}
+    steps:
+      - uses: ./
+        id: changed
+        with:
+          paths:
+            - "packages/app/functions/**"
 
   service-landing:
     runs-on: ubuntu-latest
     outputs:
       changed: ${{ steps.changed.outputs.changed }}
-    steps: 
+    steps:
       - uses: ./
         id: changed
         with:
-          paths: 
-            - 'packages/landing/**'
+          paths:
+            - "packages/landing/**"
 
   deploy-dev-app:
     needs: [service-app, service-functions]
@@ -45,7 +45,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-       
+
       - name: Develop Changed app/functions 1
         if: needs.service-functions.outputs.changed == 'true'
         run: echo "Call app/functions 1"
