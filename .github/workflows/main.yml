@@ -16,7 +16,9 @@ jobs:
       - uses: marceloprado/has-changed-path@v1
         id: changed
         with:
-          paths: packages/app/ !packages/app/functions/
+          paths:
+            - "!packages/app/functions/**"
+            - "packages/app/**"
 
   service-functions:
     runs-on: ubuntu-latest
