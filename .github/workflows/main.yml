@@ -37,7 +37,9 @@ jobs:
 
   deploy-dev-app:
     needs: [service-app, service-functions]
-    if: github.ref == 'refs/heads/develop'
+    if: |
+      github.ref == 'refs/heads/develop' && 
+      (needs.service-functions.outputs.changed == 'true' || needs.service-app.outputs.changed == 'true')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -56,7 +58,9 @@ jobs:
 
   deploy-prod-app:
     needs: [service-app, service-functions]
-    if: github.ref == 'refs/heads/master'
+    if: |
+      github.ref == 'refs/heads/master' && 
+      (needs.service-functions.outputs.changed == 'true' || needs.service-app.outputs.changed == 'true')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -75,7 +79,9 @@ jobs:
 
   deploy-landing:
     needs: [service-landing]
-    if: github.ref == 'refs/heads/master'
+    if: |
+      github.ref == 'refs/heads/master' && 
+      needs.service-landing.outputs.changed == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
