@@ -10,7 +10,7 @@ jobs:
     outputs:
       changed: ${{ steps.changed.outputs.changed }}
     steps:
-      - uses: ./
+      - uses: marceloprado/has-changed-path@v1
         id: changed
         with:
           paths: packages/app/ !packages/app/functions/
@@ -20,7 +20,7 @@ jobs:
     outputs:
       changed: ${{ steps.changed.outputs.changed }}
     steps:
-      - uses: ./
+      - uses: marceloprado/has-changed-path@v1
         id: changed
         with:
           paths: packages/app/functions/
@@ -30,7 +30,7 @@ jobs:
     outputs:
       changed: ${{ steps.changed.outputs.changed }}
     steps:
-      - uses: ./
+      - uses: marceloprado/has-changed-path@v1
         id: changed
         with:
           paths: packages/landing/
