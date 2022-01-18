@@ -10,7 +10,7 @@ jobs:
     outputs:
       changed: ${{ steps.changed.outputs.changed }}
     steps: 
-      uses: ./
+      - uses: ./
         id: changed
         with:
           paths: 
@@ -22,7 +22,7 @@ jobs:
       outputs:
         changed: ${{ steps.changed.outputs.changed }}
       steps: 
-        uses: ./
+        - uses: ./
           id: changed
           with:
             paths: 
@@ -33,7 +33,7 @@ jobs:
     outputs:
       changed: ${{ steps.changed.outputs.changed }}
     steps: 
-      uses: ./
+      - uses: ./
         id: changed
         with:
           paths: 
